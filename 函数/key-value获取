@@ -1,0 +1,52 @@
+CREATE DEFINER=`root`@`%` FUNCTION `SPSTR`(
+  x VARCHAR(255),
+  pos VARCHAR(255)
+) RETURNS varchar(255) CHARSET utf8
+BEGIN
+
+DECLARE i INT;
+DECLARE num INT;
+DECLARE numall DECIMAL(20,6);
+DECLARE aa VARCHAR(255);
+set num=CHAR_LENGTH(x)-CHAR_LENGTH(REPLACE(x,';',''))+1;
+
+SET i = 0; 
+SET numall = 0; 
+WHILE i<num DO
+
+set aa=REPLACE(SUBSTRING(SUBSTRING_INDEX(x, ';', i+1),
+       LENGTH(SUBSTRING_INDEX(x, ';', i)) + 1),
+       ';', '');
+
+
+		if pos=REPLACE(SUBSTRING(SUBSTRING_INDEX(aa, ':', 1),
+       LENGTH(SUBSTRING_INDEX(aa, ':', 0)) + 1),
+       ';', '') then
+      
+			 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(aa, ':', 2),
+       LENGTH(SUBSTRING_INDEX(aa, ':', 1)) + 2),
+       ':', '');
+
+			 end if;
+ 
+		if pos=i+1 then
+
+			 RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(aa, ':', 2),
+       LENGTH(SUBSTRING_INDEX(aa, ':', 1)) + 2),
+       ':', '');
+
+			 end if;
+		if pos="all" then
+
+			 set numall=numall+ REPLACE(SUBSTRING(SUBSTRING_INDEX(aa, ':', 2),
+       LENGTH(SUBSTRING_INDEX(aa, ':', 1)) + 2),
+       ':', '');
+
+			 end if;
+
+set i=i+1;
+
+end while;
+RETURN numall;
+
+end
