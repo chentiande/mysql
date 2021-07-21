@@ -1,0 +1,8 @@
+CREATE DEFINER=`root`@`%` FUNCTION `divnull`(a decimal(30,6),b decimal(30,6)) RETURNS decimal(30,6)
+BEGIN
+if b=0 or b is NULL then
+    return NULL;
+else 
+    return a/b;
+end if;
+END
