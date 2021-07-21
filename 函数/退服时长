@@ -1,0 +1,23 @@
+CREATE DEFINER=`root`@`%` FUNCTION `timelen`(starttime datetime,event_time datetime,clear_time datetime,beginhour INT,endhour INT) RETURNS decimal(24,4)
+BEGIN
+	
+	IF event_time> date_add(starttime, interval beginhour hour) and event_time <date_add(starttime, interval endhour hour) and clear_time<date_add(starttime,interval endhour hour)  THEN
+		RETURN  TIMESTAMPDIFF(MINUTE, event_time,clear_time );
+	
+	END IF;
+	IF event_time> date_add(starttime, interval beginhour hour) and event_time <date_add(starttime, interval endhour hour)  and (clear_time is null or clear_time>date_add(starttime, interval endhour hour )) THEN
+		RETURN  TIMESTAMPDIFF(MINUTE, event_time,date_add(starttime, interval endhour hour ) );
+	
+	END IF;
+	
+		IF event_time<date_add(starttime, interval beginhour hour  ) and clear_time>date_add(starttime, interval beginhour hour  ) and clear_time<date_add(starttime,interval endhour hour) THEN
+		RETURN  TIMESTAMPDIFF(MINUTE, date_add(starttime, interval beginhour hour ) ,clear_time );
+	
+	END IF;
+	
+		IF event_time<date_add(starttime, interval beginhour hour  ) and ( clear_time is null or clear_time>date_add(starttime, interval endhour hour )) THEN
+		RETURN  TIMESTAMPDIFF(MINUTE, date_add(starttime, interval beginhour hour ),date_add(starttime, interval endhour hour ) );
+	
+	END IF;
+	return 0;
+END
