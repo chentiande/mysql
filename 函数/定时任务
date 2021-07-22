@@ -1,0 +1,11 @@
+select * from dm_ct_cm_site
+CREATE EVENT cell_alltype_timelen_sum ON SCHEDULE EVERY 1 DAY
+STARTS '2021-07-18 04:39:00'
+ENDS '2021-07-18 00:00:00'+INTERVAL 400 DAY
+ON COMPLETION PRESERVE DO
+CALL cell_alltype_timelen_sum(1);
+
+set global event_scheduler = on;
+select now()
+
+select * from information_schema.events limit 1
