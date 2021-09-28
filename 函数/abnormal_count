@@ -1,0 +1,24 @@
+DELIMITER $$  
+   
+  
+DROP FUNCTION IF EXISTS `abnormal_count`$$  
+  
+CREATE  FUNCTION abnormal_count (id VARCHAR(255), name VARCHAR(255)) RETURNS int  
+BEGIN  
+DECLARE num  INT;
+
+case name
+when "A" then
+set num= select 
+return 1;
+when "B" then
+return 2;
+else
+return 3;
+end case;
+
+
+   
+END$$  
+  
+DELIMITER ;  
